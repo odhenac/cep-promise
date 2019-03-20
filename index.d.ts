@@ -1,4 +1,4 @@
-declare module 'cep-promise' {
+declare module '@pluritech/cep-promise' {
   interface CEP {
     cep: string,
     state: string,
