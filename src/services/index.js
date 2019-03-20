@@ -1,6 +1,7 @@
 import CepAberto from './cepaberto'
 import Correios from './correios'
 import ViaCep from './viacep'
+import Postmon from './postmom'
 import { PROXY_URL } from '../utils/consts'
 
 /* istanbul ignore next */
@@ -16,3 +17,4 @@ function injectProxy (Service) {
 export const CepAbertoService = isBrowser() ? injectProxy(CepAberto) : CepAberto
 export const CorreiosService = isBrowser() ? injectProxy(Correios) : Correios
 export const ViaCepService = ViaCep
+export const PostmonService = Postmon
