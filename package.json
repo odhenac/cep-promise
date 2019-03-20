@@ -1,5 +1,5 @@
 {
-  "name": "cep-promise",
+  "name": "@pluritech/cep-promise",
   "version": "3.0.6",
   "description": "Busca por CEP integrado diretamente aos serviços dos Correios e ViaCEP",
   "main": "dist/cep-promise.min.js",
@@ -21,7 +21,7 @@
   "browser": "dist/cep-promise-browser.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/filipedeschamps/cep-promise.git"
+    "url": "https://github.com/pluritech/cep-promise.git"
   },
   "author": "Filipe Deschamps",
   "license": "MIT",
