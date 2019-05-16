@@ -14,7 +14,6 @@ export default function (cepRawValue) {
     .then(leftPadWithZeros)
     .then(fetchCepFromServices)
     .catch(handleServicesError)
-    .catch(throwApplicationError)
 }
 
 function validateInputType (cepRawValue) {
@@ -57,24 +56,18 @@ function validateInputLength (cepWithLeftPad) {
   })
 }
 
-function fetchCepFromServices (cepWithLeftPad) {
-  return Promise.any([
-    PostmonService(cepWithLeftPad),
-    ViaCepService(cepWithLeftPad),
-  ])
+async function fetchCepFromServices (cepWithLeftPad) {
+  try {
+    return await PostmonService(cepWithLeftPad);
+  } catch (e) {
+    return await ViaCepService(cepWithLeftPad);
+  }
 }
 
 function handleServicesError (aggregatedErrors) {
-  if (aggregatedErrors.length !== undefined) {
-    throw new CepPromiseError({
-      message: 'Todos os serviços de CEP retornaram erro.',
-      type: 'service_error',
-      errors: aggregatedErrors
-    })
-  }
-  throw aggregatedErrors
-}
-
-function throwApplicationError ({ message, type, errors }) {
-  throw new CepPromiseError({ message, type, errors })
+  throw new CepPromiseError({
+    message: 'Todos os serviços de CEP retornaram erro.',
+    type: 'service_error',
+    errors: aggregatedErrors
+  })
 }
