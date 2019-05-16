@@ -56,12 +56,9 @@ function validateInputLength (cepWithLeftPad) {
   })
 }
 
-async function fetchCepFromServices (cepWithLeftPad) {
-  try {
-    return await PostmonService(cepWithLeftPad);
-  } catch (e) {
-    return await ViaCepService(cepWithLeftPad);
-  }
+function fetchCepFromServices (cepWithLeftPad) {
+  return ViaCepService(cepWithLeftPad)
+    .catch(() => PostmonService(cepWithLeftPad))
 }
 
 function handleServicesError (aggregatedErrors) {

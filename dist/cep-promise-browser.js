@@ -288,7 +288,7 @@ Promise.any = function (iterable) {
 var CEP_SIZE = 8;
 
 function cepPromise (cepRawValue) {
-  return Promise.resolve(cepRawValue).then(validateInputType).then(removeSpecialCharacters).then(validateInputLength).then(leftPadWithZeros).then(fetchCepFromServices).catch(handleServicesError).catch(throwApplicationError$4);
+  return Promise.resolve(cepRawValue).then(validateInputType).then(removeSpecialCharacters).then(validateInputLength).then(leftPadWithZeros).then(fetchCepFromServices).catch(handleServicesError);
 }
 
 function validateInputType(cepRawValue) {
@@ -332,26 +332,17 @@ function validateInputLength(cepWithLeftPad) {
 }
 
 function fetchCepFromServices(cepWithLeftPad) {
-  return Promise.any([PostmonService(cepWithLeftPad), ViaCepService(cepWithLeftPad)]);
+  return PostmonService(cepWithLeftPad).catch(function () {
+    return ViaCepService(cepWithLeftPad);
+  });
 }
 
 function handleServicesError(aggregatedErrors) {
-  if (aggregatedErrors.length !== undefined) {
-    throw new CepPromiseError({
-      message: 'Todos os serviços de CEP retornaram erro.',
-      type: 'service_error',
-      errors: aggregatedErrors
-    });
-  }
-  throw aggregatedErrors;
-}
-
-function throwApplicationError$4(_ref) {
-  var message = _ref.message,
-      type = _ref.type,
-      errors = _ref.errors;
-
-  throw new CepPromiseError({ message: message, type: type, errors: errors });
+  throw new CepPromiseError({
+    message: 'Todos os serviços de CEP retornaram erro.',
+    type: 'service_error',
+    errors: aggregatedErrors
+  });
 }
 
 return cepPromise;
