@@ -1,5 +1,5 @@
 {
-  "name": "@pluritech/cep-promise",
+  "name": "@odhenac/cep-promise",
   "version": "3.0.11",
   "description": "Busca por CEP integrado diretamente aos serviços dos Correios e ViaCEP",
   "main": "dist/cep-promise.min.js",

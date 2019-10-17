@@ -257,8 +257,8 @@ function validateInputLength(cepWithLeftPad) {
 }
 
 function fetchCepFromServices(cepWithLeftPad) {
-  return PostmonService(cepWithLeftPad).catch(function () {
-    return ViaCepService(cepWithLeftPad);
+  return ViaCepService(cepWithLeftPad).catch(function () {
+    return PostmonService(cepWithLeftPad);
   });
 }
 

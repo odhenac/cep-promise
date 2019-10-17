@@ -78,7 +78,7 @@ var index = typeof fetch == 'function' ? fetch.bind() : function (url, options) 
 	return new Promise(function (resolve, reject) {
 		var request = new XMLHttpRequest();
 
-		request.open(options.method || 'get', url);
+		request.open(options.method || 'get', url, true);
 
 		for (var i in options.headers) {
 			request.setRequestHeader(i, options.headers[i]);
@@ -92,7 +92,7 @@ var index = typeof fetch == 'function' ? fetch.bind() : function (url, options) 
 
 		request.onerror = reject;
 
-		request.send(options.body);
+		request.send(options.body || null);
 
 		function response() {
 			var _keys = [],
@@ -100,7 +100,7 @@ var index = typeof fetch == 'function' ? fetch.bind() : function (url, options) 
 			    headers = {},
 			    header;
 
-			request.getAllResponseHeaders().replace(/^(.*?):\s*([\s\S]*?)$/gm, function (m, key, value) {
+			request.getAllResponseHeaders().replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function (m, key, value) {
 				_keys.push(key = key.toLowerCase());
 				all.push([key, value]);
 				header = headers[key];
@@ -108,7 +108,7 @@ var index = typeof fetch == 'function' ? fetch.bind() : function (url, options) 
 			});
 
 			return {
-				ok: (request.status / 200 | 0) == 1, // 200-299
+				ok: (request.status / 100 | 0) == 2, // 200-299
 				status: request.status,
 				statusText: request.statusText,
 				url: request.responseURL,
@@ -332,8 +332,8 @@ function validateInputLength(cepWithLeftPad) {
 }
 
 function fetchCepFromServices(cepWithLeftPad) {
-  return PostmonService(cepWithLeftPad).catch(function () {
-    return ViaCepService(cepWithLeftPad);
+  return ViaCepService(cepWithLeftPad).catch(function () {
+    return PostmonService(cepWithLeftPad);
   });
 }
 
